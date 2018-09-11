@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.weiit.web.admin.user.mapper.UserMapper">
+ 	
+	<!-- 查询所有用户信息 -->
+	<select id="selectList"  resultType="com.weiit.core.entity.E"  parameterType="map">
+		select 
+			user_id,
+			user_id as validate_id,
+			user_account,
+			user_password,
+			user_name,
+			user_nike,
+			user_phone,
+			user_img,
+			user_id_card,
+			user_true_name,
+			user_sex,
+			user_email,
+			user_birthday,
+			region,
+			balance,
+			integral,
+			wx_union_id,
+			wx_open_id,
+			ip,
+			mac,
+			create_time,
+			integral,
+			update_time,
+			shop_id
+		from
+		    weiit_open_users 
+		where 
+			1=1
+		<if test="user_id !=null">     
+            and  user_id=#{user_id}
+        </if>
+		<if test="user_name !=null and user_name !='' ">     
+            and  user_name  like concat('%', #{user_name}, '%') 
+        </if>
+        order by create_time desc
+	</select>
+	
+	<!-- 删除会员信息 -->
+	<delete id="remove"   parameterType="map" >
+	    delete from weiit_open_users where user_id=#{validate_id}
+	</delete>
+     
+    <delete id="removeAddress"   parameterType="map" >
+	    delete from weiit_open_user_address where user_id=#{validate_id}
+	</delete>
+	
+	<delete id="removeBalanceLog"   parameterType="map" >
+	    delete from weiit_open_balance_log where user_id=#{validate_id}
+	</delete>
+	
+	<delete id="removeIntegralLog"   parameterType="map" >
+	    delete from weiit_open_integral_log where user_id=#{validate_id}
+	</delete>
+     
+     <delete id="removeBatch" parameterType="map">
+     	delete from weiit_open_users where user_id in(${validate_ids})
+     </delete>
+     
+	 <!-- 添加会员信息 -->
+	<insert id="insert" parameterType="map" useGeneratedKeys="true" keyProperty="user_id">
+	 insert into weiit_open_users
+	   (
+			user_account,
+			user_password,
+			user_phone,
+			user_name,
+			region,
+			integral,
+			balance,
+			create_time,
+			update_time,
+			shop_id
+	   )
+	   values
+	   (
+			#{user_account},
+			#{user_password},
+			#{user_phone},
+			#{user_name},
+			#{region},
+			#{integral},
+			#{balance},
+			now(),
+			now(),
+			#{shop_id}
+	   )     
+	</insert>
+     
+   
+    <!-- 根据id查询会员信息 -->
+	<select id="selectOne"  resultType="com.weiit.core.entity.E"  parameterType="map">
+	     select  
+			user_id,
+			user_id as validate_id,
+			user_account,
+			user_password,
+			user_name,
+			user_nike,
+			user_phone,
+			user_img,
+			user_id_card,
+			user_true_name,
+			user_sex,
+			user_email,
+			user_birthday,
+			region,
+			balance,
+			integral,
+			wx_union_id,
+			wx_open_id,
+			ip,
+			mac,
+			create_time,
+			integral,
+			update_time,
+			shop_id
+		 from  
+		    weiit_open_users
+	     where 
+	     	1=1
+	     <if test="validate_id!=null">
+	    	and user_id=#{validate_id}
+	     </if>
+	</select>
+    
+    
+     <!-- 修改 -->
+     <update id="edit"   parameterType="map" >
+        update weiit_open_users 
+        set
+        <if test="user_account!=null and user_account!=''">
+       	 	 user_account=#{user_account},
+        </if>
+        <if test="user_password!=null and user_password!=''">
+       		user_password=#{user_password},
+        </if>
+        <if test="user_phone!=null and user_phone!=''">
+       		user_phone=#{user_phone},
+        </if>
+         <if test="user_name!=null and user_name!=''">
+       		user_name=#{user_name},
+        </if>
+         <if test="region!=null and region!=''">
+       		region=#{region},
+        </if>
+         <if test="integral!=null and integral!=''">
+       		integral=#{integral},
+        </if>
+         <if test="balance!=null and balance!=''">
+       		balance=#{balance},
+        </if>
+       		update_time=now()
+        where 
+        	user_id=#{validate_id} 
+     </update>
+     
+     
+     <!-- 查询单个用户的积分信息 -->
+     <select id="selectUserIntergralList" resultType="com.weiit.core.entity.E"  parameterType="map">
+		select 
+			id,
+			user_id,
+			user_name,
+			integral,
+			remark,
+			state,
+			create_time,
+			update_time,
+			shop_id
+		from 
+		    weiit_open_integral_log 
+		where 
+			1=1
+	    <if test="user_id!=null and user_id !='' ">
+       		and user_id=#{user_id}
+        </if>
+        <if test="user_name !=null and user_name !='' ">     
+            and  user_name  like concat('%', #{user_name}, '%')
+        </if>
+            order by create_time desc
+     </select>
+     
+      <!-- 查询单个用户的余额信息 -->
+     <select id="selectbalanceList" resultType="com.weiit.core.entity.E"  parameterType="map">
+     	select 
+     		id, 
+			user_id,
+			user_name,
+			balance,
+			remark,
+			type,
+			state,
+			create_time,
+			update_time,
+			shop_id
+		from 
+		    weiit_open_balance_log 
+		where 
+			1=1
+		<if test="user_id!=null">
+			and user_id=#{user_id}
+		</if>
+		<if test="user_name !=null and user_name !='' ">     
+            and  user_name  like concat('%', #{user_name}, '%') 
+        </if>
+     </select>
+         
+     <!-- 查询会员地址信息 -->
+	<select id="selectAdressList"  resultType="com.weiit.core.entity.E"  parameterType="map">
+		select 
+			id,
+			user_id,
+			user_name,
+			consignee,
+			province,
+			city,
+			district,
+			address_detail,
+			zip_code,
+			phone,
+			create_time
+		from 
+		    weiit_open_user_address 
+		where 
+			1=1 
+		<if test="user_id!=null">
+       		and user_id=#{user_id} 
+        </if>
+        <if test="user_name !=null and user_name !='' ">     
+            and  user_name  like concat('%', #{user_name}, '%') 
+        </if> 
+	</select>
+     
+</mapper>

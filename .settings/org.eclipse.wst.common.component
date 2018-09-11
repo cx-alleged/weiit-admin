@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="weiit-admin">
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <dependent-module archiveName="weiit-support-core-1.0.2-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/weiit-support-core/weiit-support-core">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="weiit-resource-common-1.0.2-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/weiit-resource-common/weiit-resource-common">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="weiit-business-system-1.0.2-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/weiit-business-system/weiit-business-system">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="context-root" value="weiit-admin"/>
+        <property name="java-output-path" value="/weiit-admin/target/classes"/>
+    </wb-module>
+</project-modules>
